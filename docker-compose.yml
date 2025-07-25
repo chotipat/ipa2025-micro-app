@@ -5,6 +5,8 @@ services:
       - "8080:8080"
     depends_on:
       - mongo
+    networks:
+      - micro-app-net
 
   mongo:
     image: mongo:6
@@ -12,6 +14,8 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    networks:
+      - micro-app-net
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -21,11 +25,26 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - micro-app-net
 
   scheduler:
     build: ./scheduler
     depends_on:
       - rabbitmq
+    networks:
+      - micro-app-net
+
+  worker:
+    build: ./worker
+    depends_on:
+      - rabbitmq
+      - mongo
+    networks:
+      - micro-app-net
 
 volumes:
   mongo-data:
+
+networks:
+  micro-app-net:
