@@ -32,7 +32,7 @@ def callback(ch, method, properties, body):
     except Exception as e:
         print(f" [!] Error: {e}")
 
-for i in range(5):
+for i in range(10):
     try:
         print(f"[ ] Connecting to RabbitMQ (attempt {i+1})...")
         credentials = pika.PlainCredentials("guest", "guest")

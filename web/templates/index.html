@@ -1,26 +1,45 @@
 <!DOCTYPE html>
 <html>
-<head><title>Routers</title></head>
-<link rel="stylesheet" href="/static/style.css" />
+<head>
+  <title>Router Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
 <body>
-  <h1>Register Router</h1>
-  <form action="/add" method="post">
-    IP: <input name="ip">
-    Username: <input name="username">
-    Password: <input name="password">
-    <button type="submit">Add</button>
+  <h1>🛠️ Router List</h1>
+
+  <form method="POST" action="/add">
+    <input name="ip" placeholder="IP" required />
+    <input name="username" placeholder="Username" required />
+    <input name="password" placeholder="Password" required />
+    <button type="submit">Add Router</button>
   </form>
 
-  <h2>Routers List</h2>
   <ul>
     {% for router in routers %}
-    <li>
-      {{ router.ip }} - {{ router.username }}
-      <form action="/delete/{{ router._id }}" method="post" style="display:inline;">
-        <button type="submit">Delete</button>
-      </form>
-    </li>
+      <li>
+        {{ router.ip }}
+        <form method="POST" action="/delete/{{ router._id }}" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
     {% endfor %}
   </ul>
+
+  <h2>📊 Interface Status (from api_service)</h2>
+  {% if interfaces %}
+    <table border="1" cellpadding="5">
+      <tr><th>IP</th><th>Interface</th><th>Status</th><th>Protocol</th></tr>
+      {% for iface in interfaces %}
+        <tr>
+          <td>{{ iface.ip }}</td>
+          <td>{{ iface.interface }}</td>
+          <td>{{ iface.status }}</td>
+          <td>{{ iface.protocol }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>No interface data available.</p>
+  {% endif %}
 </body>
 </html>
