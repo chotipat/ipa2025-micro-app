@@ -44,6 +44,16 @@ services:
     networks:
       - micro-app-net
 
+  api_service:
+    build:
+      context: ./api_service
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    networks:
+      - micro-app-net
+
 volumes:
   mongo-data:
 
