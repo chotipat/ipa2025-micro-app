@@ -32,6 +32,7 @@ services:
     build: ./scheduler
     depends_on:
       - rabbitmq
+      - mongo
     networks:
       - micro-app-net
 

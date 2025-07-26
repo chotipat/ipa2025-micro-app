@@ -1,5 +1,5 @@
 FROM python:3.12-slim
 WORKDIR /app
 COPY . /app
-RUN pip install pika
-CMD ["sleep", "infinity"]
+RUN pip install --no-cache-dir pika pymongo apscheduler
+CMD ["python3", "-u", "scheduler.py"]

@@ -8,16 +8,12 @@ import time
 print(">> worker.py started <<")
 
 def callback(ch, method, properties, body):
-    router_ip = body.decode()
-    print(f" [x] Received job for router {router_ip}")
+    job = json.loads(body.decode())
+    router_info = job["router_info"]
+    print(f" [x] Received job for router {router_info['host']}")
 
     try:
-        connection = ConnectHandler(
-            device_type="cisco_ios",
-            host=router_ip,
-            username="admin",
-            password="cisco",  
-        )
+        connection = ConnectHandler(**router_info)
         output = connection.send_command("show ip interface brief")
         connection.disconnect()
 
@@ -25,12 +21,13 @@ def callback(ch, method, properties, body):
         db = mongo["ipa2025"]
         collection = db["interface_status"]
         collection.insert_one({
-            "router_ip": router_ip,
+            "router_id": job["router_id"],
+            "router_ip": job["router_info"]["host"],
             "status": output,
             "created_at": datetime.now(UTC),
         })
 
-        print(f" [✓] Stored interface status for {router_ip}")
+        print(f" [✓] Stored interface status for {router_info['host']}")
 
     except Exception as e:
         print(f" [!] Error: {e}")
