@@ -73,4 +73,5 @@ channel.queue_declare(queue="router_jobs")
 channel.basic_consume(queue="router_jobs", on_message_callback=callback, auto_ack=True)
 
 print(" [*] Worker waiting for messages...")
+channel.basic_qos(prefetch_count=1)
 channel.start_consuming()
