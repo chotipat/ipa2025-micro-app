@@ -27,19 +27,30 @@
 
   <h2>📊 Interface Status (from api_service)</h2>
   {% if interfaces %}
-    <table border="1" cellpadding="5">
-      <tr><th>IP</th><th>Interface</th><th>Status</th><th>Protocol</th></tr>
-      {% for iface in interfaces %}
+  {% for router in interfaces %}
+    <h3>🔌 Router IP: {{ router.router_ip }}</h3>
+    <p>🕒 Last updated: {{ router.created_at }}</p>
+    <table border="1" cellpadding="5" cellspacing="0">
+      <tr>
+        <th>Interface</th>
+        <th>IP Address</th>
+        <th>Status</th>
+        <th>Protocol</th>
+      </tr>
+      {% for iface in router.interfaces %}
         <tr>
-          <td>{{ iface.ip }}</td>
           <td>{{ iface.interface }}</td>
+          <td>{{ iface.ip }}</td>
           <td>{{ iface.status }}</td>
           <td>{{ iface.protocol }}</td>
         </tr>
       {% endfor %}
     </table>
+    <br>
+  {% endfor %}
   {% else %}
     <p>No interface data available.</p>
   {% endif %}
+
 </body>
 </html>
