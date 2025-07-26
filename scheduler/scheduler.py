@@ -1,6 +1,7 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from database import routers_collection
 from rabbitmq import channel
+from datetime import datetime
 import json
 
 def get_interface_status():
@@ -28,7 +29,7 @@ def get_interface_status():
 
 def run_scheduler():
     scheduler = BlockingScheduler()
-    scheduler.add_job(get_interface_status, "interval", minutes=1)
+    scheduler.add_job(get_interface_status, "interval", minutes=1, next_run_time=datetime.now())
     print("📅 Scheduler started")
     scheduler.start()
 

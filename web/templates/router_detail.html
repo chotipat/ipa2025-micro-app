@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Router {{ ip }}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <h2>🔍 Router: {{ ip }}</h2>
+
+  {% if interfaces and interfaces[0].interfaces %}
+  <table border="1" cellpadding="5">
+    <tr>
+      <th>Interface</th>
+      <th>IP Address</th>
+      <th>Status</th>
+      <th>Protocol</th>
+      <th>🕒 Updated At</th>
+    </tr>
+    {% for iface in interfaces[0].interfaces %}
+      <tr>
+        <td>{{ iface.interface }}</td>
+        <td>{{ iface.ip }}</td>
+        <td>{{ iface.status }}</td>
+        <td>{{ iface.protocol }}</td>
+        <td>{{ interfaces[0].created_at }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p>No interface data found for this router.</p>
+  {% endif %}
+
+  <br>
+  <a href="/">⬅ Back</a>
+</body>
+</html>

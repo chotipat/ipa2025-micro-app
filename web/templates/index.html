@@ -28,7 +28,12 @@
   <h2>📊 Interface Status (from api_service)</h2>
   {% if interfaces %}
   {% for router in interfaces %}
-    <h3>🔌 Router IP: {{ router.router_ip }}</h3>
+    <h3>
+      🔌 Router IP:
+      <a href="{{ url_for('router_detail', ip=router.router_ip) }}" target="_blank">
+        {{ router.router_ip }}
+      </a>
+    </h3>
     <p>🕒 Last updated: {{ router.created_at }}</p>
     <table border="1" cellpadding="5" cellspacing="0">
       <tr>
