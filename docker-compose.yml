@@ -37,7 +37,9 @@ services:
       - micro-app-net
 
   worker:
-    build: ./worker
+    build: 
+      context: ./
+      dockerfile: Dockerfile.worker
     depends_on:
       - rabbitmq
       - mongo
