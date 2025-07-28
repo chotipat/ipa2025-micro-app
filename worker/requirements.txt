@@ -1,4 +1,4 @@
 pika
+netmiko==4.2.0
 pymongo
-netmiko
 python-dotenv
