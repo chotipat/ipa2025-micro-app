@@ -38,8 +38,8 @@ services:
 
   worker:
     build: 
-      context: ./
-      dockerfile: Dockerfile.worker
+      context: ./worker
+      dockerfile: Dockerfile
     depends_on:
       - rabbitmq
       - mongo
