@@ -14,7 +14,7 @@ def test_save_interface_data_integration():
 
     # 3. เช็คว่า MongoDB มีข้อมูลที่เพิ่งบันทึกไป
     client = MongoClient("mongodb://localhost:27017/")
-    db = client["ipa2025"]
+    db = client["ipa2025_test"]
     collection = db["interface_status"]
 
     # รอเล็กน้อยให้ MongoDB เขียนข้อมูลเสร็จ

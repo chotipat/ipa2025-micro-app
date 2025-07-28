@@ -6,15 +6,11 @@ import os
 
 load_dotenv()
 
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongo:27017/")
-client = MongoClient(MONGO_URI)
-
-
-
 def save_interface_data(router_id, router_ip, interfaces):
     MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongo:27017/")
+    DB_NAME = os.getenv("DB_NAME", "ipa2025")
     mongo = MongoClient(MONGO_URI)
-    db = mongo["ipa2025"]
+    db = mongo[DB_NAME]
     collection = db["interface_status"]
     data = {
         "router_id": router_id,
