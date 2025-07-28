@@ -2,3 +2,4 @@ pika
 pymongo
 netmiko
 python-dotenv
+fastapi[all]
