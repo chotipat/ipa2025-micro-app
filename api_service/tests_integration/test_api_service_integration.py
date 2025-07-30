@@ -4,10 +4,10 @@ from fastapi.testclient import TestClient
 from pymongo import MongoClient
 from datetime import datetime, timezone
 from api_service.app import app
-
-# ใช้ไฟล์ .env.test
 from dotenv import load_dotenv
-load_dotenv()
+
+env_file = os.getenv("ENV_FILE", ".env.test")
+load_dotenv(dotenv_path=env_file, override=True)
 
 client = TestClient(app)
 
@@ -15,12 +15,12 @@ client = TestClient(app)
 def setup_test_db():
     mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
     db_name = os.getenv("DB_NAME", "ipa2025_test")
+    print("Env", mongo_uri, db_name)
     mongo = MongoClient(mongo_uri)
     db = mongo[db_name]
     collection = db["interface_status"]
-    collection.delete_many({})  # ล้างข้อมูลก่อน
+    collection.delete_many({}) 
 
-    # ใส่ mock ข้อมูล
     now = datetime.now(timezone.utc)
     data = [
         {
@@ -42,9 +42,8 @@ def setup_test_db():
     ]
     collection.insert_many(data)
 
-    yield  # รันเทสต์
+    yield 
 
-    # ทำความสะอาดหลังเทสต์
     collection.delete_many({})
     mongo.close()
 

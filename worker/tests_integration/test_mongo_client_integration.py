@@ -2,22 +2,25 @@ from worker.mongo_client import save_interface_data
 from pymongo import MongoClient
 from datetime import datetime
 import time
+import os
+from dotenv import load_dotenv
 
 def test_save_interface_data_integration():
-    # 1. เตรียมข้อมูลทดสอบ
     router_id = "test_router_1"
     router_ip = "192.168.100.1"
     interfaces = [{"intf": "Gig0/0", "status": "up"}]
 
-    # 2. เรียกฟังก์ชันจริง
     save_interface_data(router_id, router_ip, interfaces)
 
-    # 3. เช็คว่า MongoDB มีข้อมูลที่เพิ่งบันทึกไป
-    client = MongoClient("mongodb://localhost:27017/")
-    db = client["ipa2025_test"]
+    env_file = os.getenv("ENV_FILE", ".env.test")
+    load_dotenv(dotenv_path=env_file)
+
+    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+    DB_NAME = os.getenv("DB_NAME", "ipa2025_test")
+    mongo = MongoClient(MONGO_URI)
+    db = mongo[DB_NAME]
     collection = db["interface_status"]
 
-    # รอเล็กน้อยให้ MongoDB เขียนข้อมูลเสร็จ
     time.sleep(1)
 
     doc = collection.find_one({"router_id": router_id, "router_ip": router_ip})
@@ -26,5 +29,4 @@ def test_save_interface_data_integration():
     assert doc["interfaces"] == interfaces
     assert isinstance(doc["created_at"], datetime)
 
-    # 4. ลบข้อมูลออกหลังจบ (เพื่อความสะอาด)
     collection.delete_many({"router_id": router_id})

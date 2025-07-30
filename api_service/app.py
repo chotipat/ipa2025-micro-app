@@ -6,7 +6,8 @@ from datetime import datetime, timezone, timedelta
 from typing import Optional, List, Dict
 from dotenv import load_dotenv
 
-load_dotenv()  # โหลดค่าจาก .env
+env_file = os.getenv("ENV_FILE", ".env")
+load_dotenv(dotenv_path=env_file, override=True)
 
 app = FastAPI()
 

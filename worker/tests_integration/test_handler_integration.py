@@ -2,8 +2,16 @@ import os
 import json
 from pymongo import MongoClient
 from worker.handler import callback
+from dotenv import load_dotenv
 
 def test_callback_real_router_and_mongo():
+    
+    env_file = os.getenv("ENV_FILE", ".env.test")
+    load_dotenv(dotenv_path=env_file)
+
+    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+    DB_NAME = os.getenv("DB_NAME", "ipa2025_test")
+
     router_info = {
         "device_type": "cisco_ios",
         "host": os.getenv("TEST_ROUTER_IP"),
@@ -20,9 +28,8 @@ def test_callback_real_router_and_mongo():
     body = json.dumps(job).encode()
     callback(None, None, None, body)
 
-    # ตรวจสอบว่า MongoDB บันทึกข้อมูลไว้จริง
-    mongo = MongoClient(os.getenv("MONGO_URI", "mongodb://localhost:27017/"))
-    db = mongo[os.getenv("DB_NAME", "ipa2025_test")]
+    mongo = MongoClient(MONGO_URI)
+    db = mongo[DB_NAME]
     collection = db["interface_status"]
 
     saved = list(collection.find({"router_id": "router_test_123"}))

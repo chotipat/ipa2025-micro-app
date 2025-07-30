@@ -1,11 +1,19 @@
 from flask import Flask, request, render_template, redirect
 from pymongo import MongoClient
 from bson import ObjectId
+from dotenv import load_dotenv
+import os
 import requests
 
+env_file = os.getenv("ENV_FILE", ".env")
+load_dotenv(dotenv_path=env_file)
+
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongo:27017/")
+DB_NAME = os.getenv("DB_NAME", "ipa2025")
+
 app = Flask(__name__)
-client = MongoClient("mongodb://mongo:27017/")
-db = client["ipa2025"]
+client = MongoClient(MONGO_URI)
+db = client[DB_NAME]
 routers = db["routers"]
 
 API_BASE = "http://api_service:8000"

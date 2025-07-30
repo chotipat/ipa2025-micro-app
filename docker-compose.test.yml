@@ -1,0 +1,75 @@
+services:
+  web:
+    build: ./web
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    networks:
+      - micro-app-net
+    environment:
+      - ENV_FILE=.env.test
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - micro-app-net
+    environment:
+      - ENV_FILE=.env.test
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"  
+      - "5672:5672"    
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - micro-app-net
+    environment:
+      - ENV_FILE=.env.test
+
+  scheduler:
+    build: ./scheduler
+    depends_on:
+      - rabbitmq
+      - mongo
+    networks:
+      - micro-app-net
+    environment:
+      - ENV_FILE=.env.test
+
+  worker:
+    build: 
+      context: ./worker
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
+      - mongo
+    networks:
+      - micro-app-net
+    environment:
+      - ENV_FILE=.env.test
+
+  api_service:
+    build:
+      context: ./api_service
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    networks:
+      - micro-app-net
+    environment:
+      - ENV_FILE=.env.test
+
+volumes:
+  mongo-data:
+
+networks:
+  micro-app-net:
