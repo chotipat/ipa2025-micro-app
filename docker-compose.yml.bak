@@ -17,6 +17,11 @@ services:
       - mongo-data:/data/db
     networks:
       - micro-app-net
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10 
     env_file: .env
 
   rabbitmq:
@@ -26,6 +31,11 @@ services:
       - "5672:5672"    
     networks:
       - micro-app-net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     env_file: .env
 
   scheduler:
@@ -64,11 +74,10 @@ services:
       context: .
       dockerfile: test/Dockerfile
     depends_on:
-      - rabbitmq
-      - mongo
-    networks:
-      - micro-app-net
-    env_file: .env.test
+      mongo:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
 volumes:
   mongo-data:
