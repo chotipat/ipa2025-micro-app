@@ -2,13 +2,9 @@ import os
 import json
 from pymongo import MongoClient
 from worker.handler import callback
-from dotenv import load_dotenv
 
 def test_callback_real_router_and_mongo():
     
-    env_file = os.getenv("ENV_FILE", ".env.test")
-    load_dotenv(dotenv_path=env_file)
-
     MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
     DB_NAME = os.getenv("DB_NAME", "ipa2025_test")
 

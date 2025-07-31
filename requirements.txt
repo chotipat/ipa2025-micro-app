@@ -1,5 +1,5 @@
 pika
 pymongo
 netmiko
-python-dotenv
+pytest-dotenv
 fastapi[all]

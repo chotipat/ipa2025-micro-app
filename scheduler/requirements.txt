@@ -1,4 +1,3 @@
 pika
 pymongo
 apscheduler
-python-dotenv

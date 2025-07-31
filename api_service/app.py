@@ -4,10 +4,6 @@ from fastapi.responses import JSONResponse
 from pymongo import MongoClient
 from datetime import datetime, timezone, timedelta
 from typing import Optional, List, Dict
-from dotenv import load_dotenv
-
-env_file = os.getenv("ENV_FILE", ".env")
-load_dotenv(dotenv_path=env_file, override=True)
 
 app = FastAPI()
 

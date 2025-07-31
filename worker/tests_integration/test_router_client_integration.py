@@ -1,12 +1,8 @@
 import os
 from worker.router_client import fetch_interface_status
 from worker.parser import parse_interfaces
-from dotenv import load_dotenv
 
 def test_fetch_interface_status_real_router():
-
-    env_file = os.getenv("ENV_FILE", ".env.test")
-    load_dotenv(dotenv_path=env_file)
 
     router_info = {
         "device_type": "cisco_ios",
