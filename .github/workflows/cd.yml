@@ -1,0 +1,24 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker
+      run: |
+        docker --version
+        docker compose version
+
+    - name: Pull and Run Services
+      run: |
+        docker compose down --rmi all || true
+        docker compose pull || true
+        docker compose up -d --build
