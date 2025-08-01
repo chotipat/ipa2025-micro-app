@@ -37,7 +37,7 @@ jobs:
 
     - name: Run Unit & Integration Tests (via test container)
       run: |
-        docker compose up --env-file .env.test --build --abort-on-container-exit --exit-code-from test
+        docker compose up --build --abort-on-container-exit --exit-code-from test
 
     - name: Login to Docker Hub
       if: success()
