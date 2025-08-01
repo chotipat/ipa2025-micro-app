@@ -2,6 +2,7 @@ import os
 from worker.router_client import fetch_interface_status
 from worker.parser import parse_interfaces
 
+
 def test_fetch_interface_status_real_router():
 
     router_info = {

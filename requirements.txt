@@ -3,3 +3,5 @@ pymongo
 netmiko
 pytest-dotenv
 fastapi[all]
+black
+flake8

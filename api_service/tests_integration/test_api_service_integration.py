@@ -7,6 +7,7 @@ from api_service.app import app
 
 client = TestClient(app)
 
+
 @pytest.fixture(scope="module", autouse=True)
 def setup_test_db():
     mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
@@ -14,33 +15,30 @@ def setup_test_db():
     mongo = MongoClient(mongo_uri)
     db = mongo[db_name]
     collection = db["interface_status"]
-    collection.delete_many({}) 
+    collection.delete_many({})
 
     now = datetime.now(timezone.utc)
     data = [
         {
             "router_id": "r1",
             "router_ip": "192.168.1.1",
-            "interfaces": [
-                { "interface": "Gig0/0", "status": "up", "protocol": "up" }
-                        ],
-            "created_at": now
+            "interfaces": [{"interface": "Gig0/0", "status": "up", "protocol": "up"}],
+            "created_at": now,
         },
         {
             "router_id": "r2",
             "router_ip": "192.168.1.2",
-            "interfaces": [
-                { "interface": "Gig0/0", "status": "up", "protocol": "up" }
-                        ],
-            "created_at": now
+            "interfaces": [{"interface": "Gig0/0", "status": "up", "protocol": "up"}],
+            "created_at": now,
         },
     ]
     collection.insert_many(data)
 
-    yield 
+    yield
 
     collection.delete_many({})
     mongo.close()
+
 
 def test_get_all_interfaces():
     response = client.get("/api/interfaces")

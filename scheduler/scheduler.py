@@ -4,6 +4,7 @@ from rabbitmq import channel
 from datetime import datetime
 import json
 
+
 def get_interface_status():
     print("⏰ Running scheduled job")
     routers = routers_collection.find()
@@ -17,7 +18,7 @@ def get_interface_status():
                 "password": router["password"],
             },
         }
-        try: 
+        try:
             channel.basic_publish(
                 exchange="",
                 routing_key="router_jobs",
@@ -27,11 +28,15 @@ def get_interface_status():
         except Exception as e:
             print(f"[!] Failed to publish for {router['ip']}: {e}")
 
+
 def run_scheduler():
     scheduler = BlockingScheduler()
-    scheduler.add_job(get_interface_status, "interval", minutes=1, next_run_time=datetime.now())
+    scheduler.add_job(
+        get_interface_status, "interval", minutes=1, next_run_time=datetime.now()
+    )
     print("📅 Scheduler started")
     scheduler.start()
+
 
 if __name__ == "__main__":
     run_scheduler()

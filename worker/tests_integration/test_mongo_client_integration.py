@@ -4,6 +4,7 @@ from datetime import datetime
 import time
 import os
 
+
 def test_save_interface_data_integration():
     router_id = "test_router_1"
     router_ip = "192.168.100.1"

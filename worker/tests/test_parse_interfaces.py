@@ -1,10 +1,11 @@
 from worker.parser import parse_interfaces
 
+
 def test_parse_interfaces():
     raw_output = """
 Interface              IP-Address      OK? Method Status                Protocol
-GigabitEthernet0/0     192.168.1.1     YES manual up                    up      
-GigabitEthernet0/1     unassigned      YES unset  administratively down down    
+GigabitEthernet0/0     192.168.1.1     YES manual up                    up
+GigabitEthernet0/1     unassigned      YES unset  administratively down down
 """
     expected = [
         {
@@ -13,7 +14,7 @@ GigabitEthernet0/1     unassigned      YES unset  administratively down down
             "ok": "YES",
             "method": "manual",
             "status": "up",
-            "protocol": "up"
+            "protocol": "up",
         },
         {
             "interface": "GigabitEthernet0/1",
@@ -21,8 +22,8 @@ GigabitEthernet0/1     unassigned      YES unset  administratively down down
             "ok": "YES",
             "method": "unset",
             "status": "administratively",
-            "protocol": "down"
-        }
+            "protocol": "down",
+        },
     ]
 
     result = parse_interfaces(raw_output)

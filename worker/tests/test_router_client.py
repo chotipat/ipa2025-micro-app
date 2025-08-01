@@ -2,6 +2,7 @@
 from unittest.mock import patch, MagicMock
 from worker.router_client import fetch_interface_status
 
+
 @patch("worker.router_client.ConnectHandler")
 def test_fetch_interface_status(mock_connect):
     mock_conn = MagicMock()
@@ -12,7 +13,7 @@ def test_fetch_interface_status(mock_connect):
         "device_type": "cisco_ios",
         "ip": "192.168.1.1",
         "username": "admin",
-        "password": "admin"
+        "password": "admin",
     }
 
     result = fetch_interface_status(dummy_router)
@@ -21,4 +22,3 @@ def test_fetch_interface_status(mock_connect):
     mock_conn.send_command.assert_called_once_with("show ip interface brief")
     mock_conn.disconnect.assert_called_once()
     assert result == "output here"
-

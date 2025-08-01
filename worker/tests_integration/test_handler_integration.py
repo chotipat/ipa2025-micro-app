@@ -3,8 +3,9 @@ import json
 from pymongo import MongoClient
 from worker.handler import callback
 
+
 def test_callback_real_router_and_mongo():
-    
+
     MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
     DB_NAME = os.getenv("DB_NAME", "ipa2025_test")
 
@@ -16,10 +17,7 @@ def test_callback_real_router_and_mongo():
         "password": os.getenv("TEST_ROUTER_PASSWORD"),
     }
 
-    job = {
-        "router_id": "router_test_123",
-        "router_info": router_info
-    }
+    job = {"router_id": "router_test_123", "router_info": router_info}
 
     body = json.dumps(job).encode()
     callback(None, None, None, body)

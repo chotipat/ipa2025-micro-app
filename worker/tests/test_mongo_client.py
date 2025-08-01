@@ -1,17 +1,18 @@
 from unittest.mock import patch, MagicMock
 from worker.mongo_client import save_interface_data
 
+
 @patch("worker.mongo_client.MongoClient")
 def test_save_interface_data(mock_mongo_client):
     # Mock db.collection.insert_one
     mock_collection = MagicMock()
     mock_db = MagicMock()
     mock_db.__getitem__.return_value = mock_collection  # db["interface_status"]
-    
+
     mock_client = MagicMock()
-    mock_client.__getitem__.return_value = mock_db      # client[DB_NAME]
-    
-    mock_mongo_client.return_value = mock_client        # MongoClient(...) -> mock_client
+    mock_client.__getitem__.return_value = mock_db  # client[DB_NAME]
+
+    mock_mongo_client.return_value = mock_client  # MongoClient(...) -> mock_client
 
     router_id = "r1"
     router_ip = "192.168.1.1"

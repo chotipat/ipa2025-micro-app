@@ -14,6 +14,7 @@ routers = db["routers"]
 
 API_BASE = "http://api_service:8000"
 
+
 @app.route("/", methods=["GET"])
 def index():
     try:
@@ -22,7 +23,10 @@ def index():
     except Exception as e:
         interfaces = []
         print(f"[!] Failed to fetch from api_service: {e}")
-    return render_template("index.html", routers=list(routers.find()), interfaces=interfaces)
+    return render_template(
+        "index.html", routers=list(routers.find()), interfaces=interfaces
+    )
+
 
 @app.route("/add", methods=["POST"])
 def add_router():
@@ -31,17 +35,15 @@ def add_router():
     password = request.form.get("password")
 
     if ip and username and password:
-        routers.insert_one({
-            "ip": ip,
-            "username": username,
-            "password": password
-        })
+        routers.insert_one({"ip": ip, "username": username, "password": password})
     return redirect("/")
+
 
 @app.route("/delete/<id>", methods=["POST"])
 def delete_router(id):
     routers.delete_one({"_id": ObjectId(id)})
     return redirect("/")
+
 
 @app.route("/router/<ip>")
 def router_detail(ip):
@@ -53,6 +55,7 @@ def router_detail(ip):
         print(f"[!] Failed to fetch interfaces for {ip}: {e}")
 
     return render_template("router_detail.html", ip=ip, interfaces=interfaces)
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8080, use_reloader=False)
